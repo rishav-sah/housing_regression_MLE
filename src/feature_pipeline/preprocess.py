@@ -80,9 +80,13 @@ def clean_and_merge(df: pd.DataFrame, metros_path: str | None = "data/raw/usmetr
         print("⚠️ Skipping lat/lng merge: metros file missing required columns.")
         return df
 
-    metros["metro_full"] = metros["metro_full"].apply(normalize_city)
+    metros = metros.copy()
+    metros["metro_full"] = metros["metro_full"].str.split(",").str[0].str.strip().apply(normalize_city)
+    metros = metros[metros["metro_full"].isin(df["city_full"].unique())]
+
     df = df.merge(metros[["metro_full", "lat", "lng"]],
-                  how="left", left_on="city_full", right_on="metro_full")
+                  how="left", left_on="city_full", right_on="metro_full",
+                  validate="many_to_one")
     df.drop(columns=["metro_full"], inplace=True, errors="ignore")
 
     missing = df[df["lat"].isnull()]["city_full"].unique()

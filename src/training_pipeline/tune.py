@@ -125,7 +125,7 @@ def tune_model(
     with mlflow.start_run(run_name="best_xgb_model"):
         mlflow.log_params(best_params)
         mlflow.log_metrics(best_metrics)
-        mlflow.xgboost.log_model(best_model, "model")
+        mlflow.xgboost.log_model(best_model, name="model")
 
     return best_params, best_metrics
 
