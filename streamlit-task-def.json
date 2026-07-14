@@ -1,8 +1,8 @@
 {
   "family": "housing-streamlit",
   "networkMode": "awsvpc",
-  "executionRoleArn": "arn:aws:iam::261899902410:role/ecsTaskExecutionRole",
-  "taskRoleArn": "arn:aws:iam::261899902410:role/ecs_s3_access",
+  "executionRoleArn": "arn:aws:iam::897021975353:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::897021975353:role/ecs_s3_access",
   "requiresCompatibilities": [
     "FARGATE"
   ],
@@ -11,7 +11,7 @@
   "containerDefinitions": [
     {
       "name": "housing-streamlit",
-      "image": "261899902410.dkr.ecr.eu-west-2.amazonaws.com/housing-streamlit:latest",
+      "image": "897021975353.dkr.ecr.us-east-2.amazonaws.com/housing-streamlit:latest",
       "essential": true,
       "portMappings": [
         {
@@ -38,9 +38,17 @@
         },
         {
           "name": "API_URL",
-          "value": "http://housing-api-alb-945997111.eu-west-2.elb.amazonaws.com/predict"
+          "value": "http://housing-api-ALB-908089615.us-east-2.elb.amazonaws.com/predict"
         }
-      ]
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/housing-streamlit",
+          "awslogs-region": "us-east-2",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }   
     }
   ]
 }
